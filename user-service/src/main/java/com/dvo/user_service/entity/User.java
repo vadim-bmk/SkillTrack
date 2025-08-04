@@ -28,6 +28,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role_type")
+    @Builder.Default
     private RoleType roleType = RoleType.EMPLOYEE;
 
     @Column(name = "telegram_id")

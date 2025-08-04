@@ -20,6 +20,10 @@ public class AppUserPrincipal implements UserDetails {
         return Collections.singletonList(new SimpleGrantedAuthority(user.getRoleType().name()));
     }
 
+    public Long getId() {
+        return user.getId();
+    }
+
     @Override
     public String getPassword() {
         return user.getPassword();

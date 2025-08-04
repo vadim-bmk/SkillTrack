@@ -17,4 +17,6 @@ public interface UserService {
     User update(Long id, UpdateUserRequest request);
 
     void deleteById(Long id);
+
+    String getTelegramId(Long id);
 }
