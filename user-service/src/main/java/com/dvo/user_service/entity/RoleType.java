@@ -1,0 +1,5 @@
+package com.dvo.user_service.entity;
+
+public enum RoleType {
+    EMPLOYEE, MANAGER, ADMIN
+}
