@@ -2,6 +2,7 @@ package com.dvo.user_service.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldNameConstants;
 
 import java.time.LocalDateTime;
 
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@FieldNameConstants
 @Entity(name = "users")
 @Table(name = "users")
 public class User {

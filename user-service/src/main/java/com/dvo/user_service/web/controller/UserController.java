@@ -1,8 +1,10 @@
 package com.dvo.user_service.web.controller;
 
 import com.dvo.user_service.aop.CheckAccessToUser;
+import com.dvo.user_service.entity.User;
 import com.dvo.user_service.mapper.UserMapper;
 import com.dvo.user_service.service.UserService;
+import com.dvo.user_service.web.model.filter.UserFilter;
 import com.dvo.user_service.web.model.request.UpdateUserRequest;
 import com.dvo.user_service.web.model.request.UpsertUserRequest;
 import com.dvo.user_service.web.model.response.UserResponse;
@@ -25,14 +27,14 @@ public class UserController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get all users")
+    @Operation(summary = "Get all users by filter")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
-    public ResponseEntity<List<UserResponse>> findAll() {
-        return ResponseEntity.ok(
-                userService.findAll()
-                        .stream()
-                        .map(userMapper::userToResponse)
-                        .toList()
+    public ResponseEntity<List<UserResponse>> findAllByFilter(@Valid UserFilter filter) {
+        List<User> users = userService.findAllByFilter(filter);
+        return ResponseEntity.ok(users
+                .stream()
+                .map(userMapper::userToResponse)
+                .toList()
         );
     }
 

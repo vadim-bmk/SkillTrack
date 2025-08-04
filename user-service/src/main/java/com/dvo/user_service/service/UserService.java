@@ -1,12 +1,13 @@
 package com.dvo.user_service.service;
 
 import com.dvo.user_service.entity.User;
+import com.dvo.user_service.web.model.filter.UserFilter;
 import com.dvo.user_service.web.model.request.UpdateUserRequest;
 
 import java.util.List;
 
 public interface UserService {
-    List<User> findAll();
+    List<User> findAllByFilter(UserFilter filter);
 
     User findById(Long id);
 

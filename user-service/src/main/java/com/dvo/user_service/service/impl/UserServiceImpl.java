@@ -6,10 +6,13 @@ import com.dvo.user_service.exception.EntityExistsException;
 import com.dvo.user_service.exception.EntityNotFoundException;
 import com.dvo.user_service.mapper.UserMapper;
 import com.dvo.user_service.repository.UserRepository;
+import com.dvo.user_service.repository.UserSpecification;
 import com.dvo.user_service.service.UserService;
+import com.dvo.user_service.web.model.filter.UserFilter;
 import com.dvo.user_service.web.model.request.UpdateUserRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,9 +31,13 @@ public class UserServiceImpl implements UserService {
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
     @Override
-    public List<User> findAll() {
-        log.info("Call findAll in UserServiceImpl");
-        return userRepository.findAll();
+    public List<User> findAllByFilter(UserFilter filter) {
+        log.info("Call findAllByFilter in UserServiceImpl with filter: {}", filter);
+
+        return userRepository.findAll(
+                UserSpecification.withFilter(filter),
+                PageRequest.of(filter.getPageNumber(), filter.getPageSize())
+        ).getContent();
     }
 
     @Override
