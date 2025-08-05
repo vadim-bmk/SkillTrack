@@ -3,6 +3,7 @@ package com.dvo.skill_service.repository;
 import com.dvo.skill_service.entity.Area;
 import com.dvo.skill_service.entity.Skill;
 import com.dvo.skill_service.web.model.filter.SkillFilter;
+import jakarta.persistence.criteria.Join;
 import org.springframework.data.jpa.domain.Specification;
 
 public interface SkillSpecification {
@@ -33,7 +34,8 @@ public interface SkillSpecification {
         return ((root, query, criteriaBuilder) -> {
             if (level == null) return null;
 
-            return criteriaBuilder.like(root.get(Skill.Fields.level), "%" + level + "%");
+            Join<Skill, String> levelJoin = root.join(Skill.Fields.levels);
+            return criteriaBuilder.like(levelJoin,  "%" + level + "%");
         });
     }
 }

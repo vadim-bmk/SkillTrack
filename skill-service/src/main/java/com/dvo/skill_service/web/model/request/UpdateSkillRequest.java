@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,5 +14,5 @@ import lombok.NoArgsConstructor;
 public class UpdateSkillRequest {
     private String name;
     private String area;
-    private String level;
+    private List<String> levels;
 }

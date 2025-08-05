@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,5 +26,8 @@ public class Skill {
 
     @Enumerated(EnumType.STRING)
     private Area area;
-    private String level;
+
+    @ElementCollection
+    @CollectionTable(name = "skill_levels", joinColumns = @JoinColumn(name = "skill_id"))
+    private List<String> levels;
 }

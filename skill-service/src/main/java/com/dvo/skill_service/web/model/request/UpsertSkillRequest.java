@@ -1,10 +1,13 @@
 package com.dvo.skill_service.web.model.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -17,6 +20,6 @@ public class UpsertSkillRequest {
     @NotBlank(message = "Area is required")
     private String area;
 
-    @NotBlank(message = "Level is required")
-    private String level;
+    @NotNull(message = "Level is required")
+    private List<String> levels;
 }
