@@ -1,9 +1,12 @@
 package com.dvo.skill_service.configuration;
 
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +19,7 @@ public class OpenApiConfiguration {
     @Bean
     public OpenAPI openAPIDescription() {
         Server localhostServer = new Server();
-        localhostServer.setUrl("http://localhost:8081");
+        localhostServer.setUrl("http://localhost:8082");
         localhostServer.setDescription("Local environment");
         Contact contact = new Contact();
         contact.setName("Dzgoev Vadim");
@@ -29,7 +32,21 @@ public class OpenApiConfiguration {
                 .description("API for skill track service")
                 .termsOfService("http://example.term.url")
                 .license(license);
-        return new OpenAPI().info(info).servers(List.of(localhostServer));
+
+        Components security = new Components().addSecuritySchemes("bearerAuth",
+                new SecurityScheme()
+                        .type(SecurityScheme.Type.HTTP)
+                        .scheme("bearer")
+                        .bearerFormat("JWT")
+        );
+
+        SecurityRequirement securityRequirement = new SecurityRequirement().addList("bearerAuth");
+
+        return new OpenAPI()
+                .info(info)
+                .servers(List.of(localhostServer))
+                .components(security)
+                .addSecurityItem(securityRequirement);
 
     }
 }

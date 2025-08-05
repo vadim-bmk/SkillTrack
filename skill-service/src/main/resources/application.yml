@@ -1,5 +1,5 @@
-user-service:
-  url: http://localhost:8081
+jwt:
+  secret: secret-key-for-jwt-for-test-my-programm-service
 
 server:
   port: 8082
