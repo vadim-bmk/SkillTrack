@@ -1,4 +1,4 @@
-package com.dvo.user_service.config;
+package com.dvo.skill_service.configuration;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;

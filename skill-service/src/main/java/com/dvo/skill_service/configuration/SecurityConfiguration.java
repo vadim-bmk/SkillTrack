@@ -1,4 +1,4 @@
-package com.dvo.user_service.config;
+package com.dvo.skill_service.configuration;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

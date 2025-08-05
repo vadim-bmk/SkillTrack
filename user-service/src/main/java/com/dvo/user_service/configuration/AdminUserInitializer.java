@@ -1,4 +1,4 @@
-package com.dvo.user_service.config;
+package com.dvo.user_service.configuration;
 
 import com.dvo.user_service.entity.RoleType;
 import com.dvo.user_service.entity.User;
