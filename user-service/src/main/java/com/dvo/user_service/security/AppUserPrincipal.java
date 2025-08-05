@@ -17,7 +17,7 @@ public class AppUserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(user.getRoleType().name()));
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRoleType().name()));
     }
 
     public Long getId() {

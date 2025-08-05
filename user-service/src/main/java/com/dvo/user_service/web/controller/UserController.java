@@ -9,6 +9,7 @@ import com.dvo.user_service.web.model.request.UpdateUserRequest;
 import com.dvo.user_service.web.model.request.UpsertUserRequest;
 import com.dvo.user_service.web.model.response.UserResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import java.util.List;
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 @RestController
+@SecurityRequirement(name = "bearerAuth")
 public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
@@ -28,7 +30,7 @@ public class UserController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get all users by filter")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MANAGER')")
     public ResponseEntity<List<UserResponse>> findAllByFilter(@Valid UserFilter filter) {
         List<User> users = userService.findAllByFilter(filter);
         return ResponseEntity.ok(users
@@ -79,7 +81,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete user by ID")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MANAGER')")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         userService.deleteById(id);
         return ResponseEntity.noContent().build();

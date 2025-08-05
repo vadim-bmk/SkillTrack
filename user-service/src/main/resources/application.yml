@@ -1,6 +1,9 @@
 server:
   port: 8081
 
+jwt:
+  secret: secret-key-for-jwt-for-test-my-programm-service
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/skill_track

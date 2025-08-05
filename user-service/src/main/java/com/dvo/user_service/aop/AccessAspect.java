@@ -21,6 +21,7 @@ public class AccessAspect {
     @Before("@annotation(CheckAccessToUser)")
     public void checkAccessToUser(JoinPoint joinPoint) {
         Object principalObj = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         if (!(principalObj instanceof AppUserPrincipal)) {
             throw new AccessDeniedException("Unauthorized access");
         }
@@ -42,11 +43,11 @@ public class AccessAspect {
             throw new IllegalArgumentException("Invalid argument type: expected userId as Long");
         }
 
-        if ("ADMIN".equals(role) || "MANAGER".equals(role)) {
+        if ("ROLE_ADMIN".equals(role) || "ROLE_MANAGER".equals(role)) {
             return;
         }
 
-        if ("EMPLOYEE".equals(role) && !requestedUserId.equals(currentUserId)) {
+        if ("ROLE_EMPLOYEE".equals(role) && !requestedUserId.equals(currentUserId)) {
             throw new AccessDeniedException("EMPLOYEE can only access their own data");
         }
 
