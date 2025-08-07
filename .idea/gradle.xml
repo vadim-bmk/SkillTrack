@@ -9,7 +9,9 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/profile-service" />
             <option value="$PROJECT_DIR$/skill-service" />
+            <option value="$PROJECT_DIR$/track-service" />
             <option value="$PROJECT_DIR$/user-service" />
           </set>
         </option>

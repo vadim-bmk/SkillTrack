@@ -1,0 +1,24 @@
+package com.dvo.track_service.web.model.response;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class TrackResponse {
+    private Long id;
+    private Long userId;
+    private Long skillId;
+    private String targetLevel;
+    private LocalDate deadline;
+    private String status;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+}

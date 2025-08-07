@@ -1,6 +1,5 @@
 package com.dvo.profile_service.web.controller;
 
-import com.dvo.profile_service.entity.Profile;
 import com.dvo.profile_service.mapper.ProfileMapper;
 import com.dvo.profile_service.service.ProfileService;
 import com.dvo.profile_service.web.filter.ProfileFilter;

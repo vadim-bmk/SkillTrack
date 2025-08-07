@@ -1,2 +1,2 @@
 rootProject.name = "SkillTrack"
-include("user-service", "skill-service", "profile-service")
+include("user-service", "skill-service", "profile-service", "track-service")
