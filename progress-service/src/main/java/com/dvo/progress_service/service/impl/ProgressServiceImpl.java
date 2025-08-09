@@ -59,8 +59,9 @@ public class ProgressServiceImpl implements ProgressService {
     @Override
     @Transactional
     public Progress create(Progress progress) {
+        TrackDto trackDto;
         try {
-            TrackDto trackDto = trackClient.getTrackById(progress.getTrackId());
+            trackDto = trackClient.getTrackById(progress.getTrackId());
         } catch (FeignException.NotFound e) {
             throw new EntityNotFoundException(MessageFormat.format("Track with ID: {0} not found", progress.getTrackId()));
         }
@@ -71,6 +72,8 @@ public class ProgressServiceImpl implements ProgressService {
                 .id(newProgress.getId())
                 .trackId(newProgress.getTrackId())
                 .createdAt(newProgress.getCreatedAt())
+                .userId(trackDto.getUserId())
+                .approved(newProgress.getApproved())
                 .action("создан")
                 .build();
         kafkaTemplate.send("progress-topic", event);
@@ -87,20 +90,23 @@ public class ProgressServiceImpl implements ProgressService {
         Progress existedProgress = progressRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(MessageFormat.format("Progress with ID: {0} not found", id)));
 
-        if (request.getTrackId() != null) {
+        progressMapper.updateRequestToProgress(request, existedProgress);
+
+        Long userId = 0L;
+        if (existedProgress.getTrackId() != null) {
             try {
-                TrackDto trackDto = trackClient.getTrackById(request.getTrackId());
+                TrackDto trackDto = trackClient.getTrackById(existedProgress.getTrackId());
+                userId = trackDto.getUserId();
             } catch (FeignException.NotFound e) {
-                throw new EntityNotFoundException(MessageFormat.format("Track with ID: {0} not found", request.getTrackId()));
+                throw new EntityNotFoundException(MessageFormat.format("Track with ID: {0} not found", existedProgress.getTrackId()));
             }
         }
-
-        progressMapper.updateRequestToProgress(request, existedProgress);
 
         ProgressEvent event = ProgressEvent.builder()
                 .id(existedProgress.getId())
                 .trackId(existedProgress.getTrackId())
                 .approved(existedProgress.getApproved())
+                .userId(userId)
                 .action("обновлен")
                 .build();
         kafkaTemplate.send("progress-topic", event);
@@ -127,10 +133,18 @@ public class ProgressServiceImpl implements ProgressService {
 
         existedProgress.setApproved(approved);
 
+        TrackDto trackDto;
+        try {
+            trackDto = trackClient.getTrackById(existedProgress.getTrackId());
+        } catch (FeignException.NotFound e) {
+            throw new EntityNotFoundException(MessageFormat.format("Track with ID: {0} not found", existedProgress.getTrackId()));
+        }
+
         ProgressEvent event = ProgressEvent.builder()
                 .id(existedProgress.getId())
                 .trackId(existedProgress.getTrackId())
                 .approved(existedProgress.getApproved())
+                .userId(trackDto.getUserId())
                 .action("изменен статус")
                 .build();
         kafkaTemplate.send("progress-topic", event);

@@ -94,6 +94,8 @@ public class TrackServiceImpl implements TrackService {
                 .targetLevel(newTrack.getTargetLevel())
                 .deadline(newTrack.getDeadline())
                 .status(newTrack.getStatus().toString())
+                .createdAt(newTrack.getCreatedAt())
+                .updatedAt(newTrack.getUpdatedAt())
                 .action("создан")
                 .build();
 
@@ -137,6 +139,8 @@ public class TrackServiceImpl implements TrackService {
                 .targetLevel(existedTrack.getTargetLevel())
                 .deadline(existedTrack.getDeadline())
                 .status(existedTrack.getStatus().toString())
+                .createdAt(existedTrack.getCreatedAt())
+                .updatedAt(existedTrack.getUpdatedAt())
                 .action("изменен")
                 .build();
 
@@ -173,6 +177,8 @@ public class TrackServiceImpl implements TrackService {
                 .targetLevel(existedTrack.getTargetLevel())
                 .deadline(existedTrack.getDeadline())
                 .status(existedTrack.getStatus().toString())
+                .createdAt(existedTrack.getCreatedAt())
+                .updatedAt(existedTrack.getUpdatedAt())
                 .action("обновлен статус")
                 .build();
 

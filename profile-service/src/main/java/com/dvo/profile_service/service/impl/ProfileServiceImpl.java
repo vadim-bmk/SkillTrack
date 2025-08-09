@@ -70,8 +70,9 @@ public class ProfileServiceImpl implements ProfileService {
             throw new EntityNotFoundException(MessageFormat.format("User with ID: {0} not found", profile.getUserId()));
         }
 
+        SkillDto skillDto;
         try {
-            SkillDto skillDto = skillClient.getSkillById(profile.getSkillId());
+            skillDto = skillClient.getSkillById(profile.getSkillId());
 
             if (!skillDto.getLevels().contains(profile.getLevel())) {
                 throw new EntityNotFoundException(MessageFormat.format("Skill levels: {0} not contains level: {1}", skillDto.getLevels(), profile.getLevel()));
@@ -85,6 +86,7 @@ public class ProfileServiceImpl implements ProfileService {
         ProfileEvent event = ProfileEvent.builder()
                 .id(newProfile.getId())
                 .skillId(newProfile.getSkillId())
+                .skillName(skillDto.getName())
                 .userId(newProfile.getUserId())
                 .verified(newProfile.getVerified())
                 .action("создан")
@@ -112,8 +114,9 @@ public class ProfileServiceImpl implements ProfileService {
             throw new EntityNotFoundException(MessageFormat.format("User with ID: {0} not found", existedProfile.getUserId()));
         }
 
+        SkillDto skillDto;
         try {
-            SkillDto skillDto = skillClient.getSkillById(existedProfile.getSkillId());
+            skillDto = skillClient.getSkillById(existedProfile.getSkillId());
 
             if (!skillDto.getLevels().contains(request.getLevel()) && request.getLevel() != null) {
                 throw new EntityNotFoundException(MessageFormat.format("Skill levels: {0} not contains level: {1}", skillDto.getLevels(), request.getLevel()));
@@ -125,6 +128,7 @@ public class ProfileServiceImpl implements ProfileService {
         ProfileEvent event = ProfileEvent.builder()
                 .id(existedProfile.getId())
                 .skillId(existedProfile.getSkillId())
+                .skillName(skillDto.getName())
                 .userId(existedProfile.getUserId())
                 .verified(existedProfile.getVerified())
                 .action("обновлен")
@@ -153,9 +157,22 @@ public class ProfileServiceImpl implements ProfileService {
 
         existedProfile.setVerified(verified);
 
+
+        SkillDto skillDto;
+        try {
+            skillDto = skillClient.getSkillById(existedProfile.getSkillId());
+
+            if (!skillDto.getLevels().contains(existedProfile.getLevel()) && existedProfile.getLevel() != null) {
+                throw new EntityNotFoundException(MessageFormat.format("Skill levels: {0} not contains level: {1}", skillDto.getLevels(), existedProfile.getLevel()));
+            }
+        } catch (FeignException.NotFound e) {
+            throw new EntityNotFoundException(MessageFormat.format("Skill with ID: {0} not found", existedProfile.getSkillId()));
+        }
+
         ProfileEvent event = ProfileEvent.builder()
                 .id(existedProfile.getId())
                 .skillId(existedProfile.getSkillId())
+                .skillName(skillDto.getName())
                 .userId(existedProfile.getUserId())
                 .verified(existedProfile.getVerified())
                 .action("изменено подтверждение")

@@ -1,4 +1,4 @@
-package com.dvo.progress_service.event;
+package com.dvo.notification_service.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
